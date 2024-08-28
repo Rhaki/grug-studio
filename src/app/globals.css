@@ -33,5 +33,9 @@ body {
 }
 
 input {
-  @apply bg-gray-600 rounded-md p-1 transition-all focus:bg-gray-500 outline-none;
+  @apply bg-gray-600 rounded-md p-1 pl-2 pr-2 transition-all focus:bg-gray-500 outline-none;
+}
+
+.p-desc {
+  @apply ml-1 font-semibold text-gray-300 text-sm;
 }

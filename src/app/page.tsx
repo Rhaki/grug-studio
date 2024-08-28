@@ -3,13 +3,15 @@
 import { useClient } from "./contexts/clientProvider";
 import SearchContract from "./components/searchContract";
 import ContractInfo from "./components/contractInfo";
-import LeftMenu from "./components/leftMenu";
+import SettingMenu from "./components/settings/layout";
+import LeftMenu from "./components/left-menu/layout";
 
 export default function Home() {
   const { valid, url } = useClient();
   return (
     <main className="flex min-h-screen">
-      <LeftMenu />
+      {/* <SettingMenu /> */}
+      <LeftMenu/>
       {valid ? (
         <div className="flex flex-col flex-1">
           {" "}

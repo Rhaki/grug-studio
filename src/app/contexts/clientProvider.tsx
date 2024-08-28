@@ -20,7 +20,7 @@ const defaultUrl = "http://localhost:26657";
 interface Env {
   client: PublicClient;
   url: string;
-  updateUrl: (url: string) => void;
+  updateUrl: (url: string) => Promise<void>;
   valid: boolean;
 }
 
@@ -33,7 +33,7 @@ interface ClientProviderProps {
 const Context = createContext<Env>({
   client: createPublicClient({ transport: http(defaultUrl) }),
   url: defaultUrl,
-  updateUrl: () => {},
+  updateUrl: async () => {},
   valid: true,
 });
 
