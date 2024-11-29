@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { type ReactNode, useState } from "react";
 
 import "../../css/animation.css";
 
@@ -6,15 +6,18 @@ interface Props {
   className?: string;
   children: ReactNode;
   tooltip?: ReactNode;
+  onClick?: () => void;
 }
 export default function LeftMenuItem(props: Props) {
   const [isHover, setIsHover] = useState(false);
 
   return (
-    <div
-      className="relative"
+    // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+<div
+      className="relative hover:cursor-pointer"
       onMouseEnter={() => !isHover && setIsHover(true)}
       onMouseLeave={() => isHover && setIsHover(false)}
+      onClick={props.onClick}
     >
       {props.children}
       {isHover && (

@@ -1,4 +1,4 @@
-import { ChangeEvent, ChangeEventHandler, KeyboardEvent } from "react";
+import type { ChangeEvent, KeyboardEvent } from "react";
 
 interface InputFieldProps {
   className?: string;

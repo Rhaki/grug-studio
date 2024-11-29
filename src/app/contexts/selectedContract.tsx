@@ -1,10 +1,10 @@
 "use client";
+import { usePublicClient } from "@left-curve/react";
+import type { Address, ContractInfo } from "@left-curve/react/types";
 import { createContext, ReactNode, useContext, useState } from "react";
-import { useClient } from "./clientProvider";
-import { Address } from "../../../../interface/packages/types/build";
 
 interface Env {
-  selectedContract: string | undefined;
+  selectedContract: ContractInfo | undefined;
   searchContract: (contract: string) => Promise<void>;
 }
 
@@ -18,20 +18,18 @@ export function SelectedContractProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { client } = useClient();
+  const client = usePublicClient();
 
-  const [selectedContract, setSelectedContract] = useState<string | undefined>(
-    undefined
-  );
+  const [selectedContract, setSelectedContract] = useState<
+    ContractInfo | undefined
+  >(undefined);
 
   async function searchContract(contract: string) {
-    let address = contract as Address;
+    const address = contract as Address;
 
-    client.queryAccount({ address }).then((account) => {
-      console.log(account);
+    client.getContractInfo({ address }).then((contract) => {
+      setSelectedContract(contract);
     });
-
-    setSelectedContract(contract);
   }
 
   return (
