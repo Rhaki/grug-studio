@@ -1,66 +1,53 @@
-import { useState } from "react";
-import { useSelectedContract } from "../contexts/selectedContract";
 import { useTab } from "../contexts/tabProvider";
 import { usePublicClient } from "@left-curve/react";
 import type { Address } from "@left-curve/react/types";
+import { wait } from "@left-curve/utils";
+import type { FormEvent } from "react";
+import toast from "react-hot-toast";
+import { getContractData, toastLoad } from "../utils";
 
 export default function SearchBar() {
   const { addTab } = useTab();
   const client = usePublicClient();
 
-  const [inputValue, setInputValue] = useState("");
+  async function submit(e: FormEvent) {
+    e.preventDefault();
 
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const handleInputChange = (event: any) => {
-    setInputValue(event.target.value);
-  };
+    const formData = new FormData(e.target as HTMLFormElement);
+    const inputValue = formData.get("search") as string;
 
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  async function handleKeyDown(event: any) {
-    if (event.key !== "Enter") {
-      return;
-    }
+    if (!inputValue.startsWith("0x")) return toast.error("Not a contract");
 
-    setInputValue("");
+    const address = inputValue as Address;
 
-    const input = event.target.value as string;
+    const { balance, info } = await toastLoad(
+      async () => getContractData(client, address),
+      {
+        message: "Searching...",
+        delay: 0,
+      }
+    );
 
-    if (input.startsWith("0x")) {
-      const address = input as Address;
-      const p1 = client.getBalances({ address });
-      const p2 = client.getContractInfo({ address });
-      client
-        .queryWasmSmart({
-          contract: address,
-          msg: { for_sure_not_a_query_variant: {} },
-        })
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-
-      Promise.all([p1, p2]).then(([balances, contractInfo]) => {
-        addTab({
-          key: { kind: "contract", address },
-          value: { kind: "contract", address, contractInfo, balances },
-        });
-      });
-    } else {
-    }
+    addTab({
+      key: { kind: "contract", address },
+      value: {
+        kind: "contract",
+        address,
+        contractInfo: info,
+        balances: balance,
+      },
+    });
   }
 
   return (
-    <div className="">
+    <form onSubmit={submit} className="flex flex-row">
       <input
+        name="search"
         className="w-full"
         type="text"
         placeholder="Search contract | username"
-        value={inputValue}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
       />
-    </div>
+      <button type="submit"> Search</button>
+    </form>
   );
 }

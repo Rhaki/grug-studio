@@ -3,7 +3,6 @@ import {
   createContext,
   type ReactNode,
   useContext,
-  useMemo,
   useState,
   useCallback,
 } from "react";
@@ -65,6 +64,7 @@ type ContextState = {
   tabs: Record<string, TabValue>;
   setSelectTab: (key: TabKey) => void;
   selectedTab: () => [TabKey, TabValue] | null;
+  removeTab(key: TabKey | string): void;
 };
 
 interface TabProviderProps {
@@ -121,12 +121,35 @@ export function TabProvider({ children }: TabProviderProps) {
     return null;
   }, [tabs, selectedTab]);
 
+  const removeTab = useCallback(
+    (key: TabKey | string) => {
+      const keyStr = typeof key === "string" ? key : convertTabKey(key);
+
+      if (Object.hasOwn(tabs, keyStr)) {
+        const newTabs = { ...tabs };
+        delete newTabs[keyStr];
+        setTab(newTabs);
+
+        if (selectedTab !== null && convertTabKey(selectedTab) === keyStr) {
+          const firstkey = Object.keys(newTabs)[0];
+          if (firstkey === undefined) {
+            setSelectTab(null);
+          } else {
+            setSelectTab(deriveTabKey(firstkey));
+          }
+        }
+      }
+    },
+    [tabs, selectedTab]
+  );
+
   return (
     <TabContext.Provider
       value={{
         addTab,
         setSelectTab: trySetSelectTab,
         selectedTab: getSelectedTab,
+        removeTab,
         tabs,
       }}
     >

@@ -6,9 +6,11 @@ import {
 } from "@/app/contexts/tabProvider";
 import ContractsHeaderTab from "./tab-header-types/contractsHeaderTab";
 import ContractHeaderTab from "./tab-header-types/contractHeaderTab";
+import { cn } from "@/app/utils";
+import { IconDelete } from "../icons/IconDelete";
 
 export default function TabHeaders() {
-  const { tabs, setSelectTab, selectedTab } = useTab();
+  const { tabs, setSelectTab, selectedTab, removeTab } = useTab();
 
   const selectedKey = selectedTab()?.[0];
   const selectedRawKey: string | null = selectedKey
@@ -31,16 +33,29 @@ export default function TabHeaders() {
   return (
     <div className="flex flex-row gap-2">
       {Object.entries(tabs).map(([key, tab]) => (
-        // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
         <div
           key={key}
+          onKeyDown={() => click(key)}
           onClick={() => click(key)}
-          className="p-2 rounded-md hover:cursor-pointer"
-          style={{
-            backgroundColor: key === selectedRawKey ? "red" : "transparent",
-          }}
+          className={cn(
+            "p-2 bg-transparent rounded-md hover:cursor-pointer transition-all",
+            {
+              "bg-red-500": key === selectedRawKey,
+            }
+          )}
         >
-          {render(tab)}
+          <div className="flex gap-1">
+            {render(tab)}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                removeTab(key);
+              }}
+              type="button"
+            >
+              <IconDelete />
+            </button>
+          </div>
         </div>
       ))}
     </div>

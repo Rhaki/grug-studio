@@ -5,21 +5,20 @@ import {
   GrunnectProvider,
   createConfig,
   passkey,
-  eip1193,
 } from "@left-curve/react";
 import { devnet } from "@left-curve/react/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import type React from "react";
-import { SelectedContractProvider } from "./contexts/selectedContract";
 import { TabProvider } from "./contexts/tabProvider";
+import { ErrorProvider } from "./contexts/errorProvider";
 
 export const config = createConfig({
   ssr: true,
   multiInjectedProviderDiscovery: true,
   chains: [devnet],
   transports: {
-    [devnet.id]: http(devnet.rpcUrls.default.http.at(0), { batch: true }),
+    [devnet.id]: http(devnet.rpcUrls.default.http.at(0)),
   },
   coins: {
     [devnet.id]: {
@@ -45,11 +44,8 @@ export interface ProvidersProps {
 export function Providers({ children }: ProvidersProps) {
   return (
     <GrunnectProvider config={config}>
-      {/* "@tanstack/react-query" is required in combination with GrunnectProvider */}
       <QueryClientProvider client={new QueryClient()}>
-        <TabProvider>
-          <SelectedContractProvider>{children}</SelectedContractProvider>
-        </TabProvider>
+        <TabProvider>{children}</TabProvider>
       </QueryClientProvider>
     </GrunnectProvider>
   );

@@ -19,10 +19,7 @@ export function ErrorProvider({ children }: TabProviderProps) {
         addError,
       }}
     >
-      <>
-        <div className="absolute bg-slate-100 h-32 w-32"></div>
-        {children}
-      </>
+      {children}
     </ErrorContext.Provider>
   );
 }
