@@ -11,20 +11,20 @@ export default function ContractsContextTab(props: ProposalsTabProps) {
     <table className="table-auto w-full">
       <thead>
         <tr className="text-left">
-          <th className="px-4 py-2">Address</th>
-          <th className="px-4 py-2">Label</th>
-          <th className="px-4 py-2">Code Hash</th>
-          <th className="px-4 py-2 w-full">Admin</th>
+          <th className="pr-2" >Address</th>
+          <th className="px-2" >Label</th>
+          <th className="px-2" >Code Hash</th>
+          <th className="px-2 w-full">Admin</th>
         </tr>
       </thead>
 
       <tbody>
         {Object.entries(props.contracts).map(([address, contractInfo]) => (
-          <tr key={address}>
-            <td className="px-4 py-2">{address}</td>
-            <td className="px-4 py-2">{contractInfo.label}</td>
-            <td className="px-4 py-2">{contractInfo.codeHash}</td>
-            <td className="px-4 py-2">{contractInfo.admin}</td>
+          <tr key={address} className="py-10">
+            <td className="pr-2 py-1">{address}</td>
+            <td className="px-2 py-1">{contractInfo.label}</td>
+            <td className="px-2 py-1">{contractInfo.codeHash}</td>
+            <td className="px-2 py-1">{contractInfo.admin}</td>
           </tr>
         ))}
       </tbody>

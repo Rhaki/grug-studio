@@ -1,4 +1,9 @@
-import type { Address, Coins, ContractInfo } from "@left-curve/react/types";
+import type {
+  Address,
+  ChainInfoResponse,
+  Coins,
+  ContractInfo,
+} from "@left-curve/react/types";
 import {
   createContext,
   type ReactNode,
@@ -9,7 +14,8 @@ import {
 
 export type TabKey =
   | { kind: "contract"; address: Address }
-  | { kind: "contracts" };
+  | { kind: "contracts" }
+  | { kind: "chainInfo" };
 
 export function convertTabKey(key: TabKey): string {
   switch (key.kind) {
@@ -18,6 +24,9 @@ export function convertTabKey(key: TabKey): string {
 
     case "contracts":
       return "contracts";
+
+    case "chainInfo":
+      return "chainInfo";
   }
 }
 
@@ -30,6 +39,9 @@ export function deriveTabKey(key: string): TabKey {
 
     case "contracts":
       return { kind: "contracts" };
+
+    case "chainInfo":
+      return { kind: "chainInfo" };
   }
 
   throw new Error("Invalid tab key");
@@ -42,7 +54,8 @@ export type TabValue =
       contractInfo: ContractInfo;
       balances?: Coins;
     }
-  | { kind: "contracts"; contracts: Record<Address, ContractInfo> };
+  | { kind: "contracts"; contracts: Record<Address, ContractInfo> }
+  | { kind: "chainInfo"; chainInfo: ChainInfoResponse };
 
 export type TabEntities =
   | {
@@ -57,6 +70,10 @@ export type TabEntities =
   | {
       key: { kind: "contracts" };
       value: { kind: "contracts"; contracts: Record<Address, ContractInfo> };
+    }
+  | {
+      key: { kind: "chainInfo" };
+      value: { kind: "chainInfo"; chainInfo: ChainInfoResponse };
     };
 
 type ContextState = {

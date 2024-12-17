@@ -2,7 +2,7 @@ interface PropsIcon {
   className?: string;
 }
 
-export function IconSchema(props: PropsIcon) {
+export function IconInfo(props: PropsIcon) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -12,7 +12,7 @@ export function IconSchema(props: PropsIcon) {
     >
       <path
         fillRule="evenodd"
-        d="M14 9v2h-3V9H8.5V7H11V1H4v6h2.5v2H4v6h2.5v2H4v6h7v-6H8.5v-2H11v-2h3v2h7V9h-7z"
+        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
         clipRule="evenodd"
       />
     </svg>

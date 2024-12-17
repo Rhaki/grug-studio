@@ -8,6 +8,7 @@ import ContractsHeaderTab from "./tab-header-types/contractsHeaderTab";
 import ContractHeaderTab from "./tab-header-types/contractHeaderTab";
 import { cn } from "@/app/utils";
 import { IconDelete } from "../icons/IconDelete";
+import ChainInfoHeaderTab from "./tab-header-types/chainInfoHeaderTab";
 
 export default function TabHeaders() {
   const { tabs, setSelectTab, selectedTab, removeTab } = useTab();
@@ -20,9 +21,16 @@ export default function TabHeaders() {
   function render(tabValue: TabValue) {
     switch (tabValue.kind) {
       case "contract":
-        return <ContractHeaderTab contract={tabValue.address} />;
+        return (
+          <ContractHeaderTab
+            contract={tabValue.address}
+            label={tabValue.contractInfo.label}
+          />
+        );
       case "contracts":
         return <ContractsHeaderTab />;
+      case "chainInfo":
+        return <ChainInfoHeaderTab />;
     }
   }
 
@@ -38,13 +46,14 @@ export default function TabHeaders() {
           onKeyDown={() => click(key)}
           onClick={() => click(key)}
           className={cn(
-            "p-2 bg-transparent rounded-md hover:cursor-pointer transition-all",
+            "p-2 bg-slate-800 rounded-md hover:cursor-pointer transition-all font-semibold shadow-md",
             {
-              "bg-red-500": key === selectedRawKey,
+              "bg-slate-500 ":
+                key === selectedRawKey,
             }
           )}
         >
-          <div className="flex gap-1">
+          <div className="flex gap-1 h-[44px] items-center">
             {render(tab)}
             <button
               onClick={(e) => {

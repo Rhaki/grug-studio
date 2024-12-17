@@ -1,6 +1,7 @@
 import { useTab } from "@/app/contexts/tabProvider";
 import ContractsContextTab from "./tab-context-tyes/contractsContextTab";
 import ContractContextTab from "./tab-context-tyes/contractContextTab";
+import ChainInfoContextTab from "./tab-context-tyes/chainInfoContextTab";
 
 export default function SelectedTab() {
   function render() {
@@ -23,8 +24,13 @@ export default function SelectedTab() {
         );
       case "contracts":
         return <ContractsContextTab contracts={value.contracts} />;
+
+        case "chainInfo":
+        return <ChainInfoContextTab info={value.chainInfo} />;
     }
   }
 
-  return <div>{render()}</div>;
+  return (
+      render()
+  );
 }

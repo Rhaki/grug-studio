@@ -24,7 +24,7 @@ export default function LeftMenuItem(props: Props) {
         <div
           className={`absolute top-[50%] right-0 translate-x-[100%] translate-y-[-50%] ${props.className}`}
         >
-          <div className="slide-in-right-20 bg-stone-900 pl-2 pr-2 p-1 ml-1 rounded-md">
+          <div className="slide-in-right-20 bg-stone-900 pl-2 pr-2 p-1 ml-1 rounded-md whitespace-nowrap">
             {props.tooltip}
           </div>
         </div>

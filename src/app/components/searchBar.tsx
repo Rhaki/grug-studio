@@ -47,7 +47,6 @@ export default function SearchBar() {
         type="text"
         placeholder="Search contract | username"
       />
-      <button type="submit"> Search</button>
     </form>
   );
 }

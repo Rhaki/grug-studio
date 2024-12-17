@@ -5,8 +5,8 @@ import clsx, { type ClassValue } from "clsx";
 import toast from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
 
-export function reduceAddress(address: Address, char = 4): string {
-  return `${address.substring(0, char + 2)}...${address.substring(
+export function reduceString(address: string, char = 4, prechar = 2): string {
+  return `${address.substring(0, char + prechar)}...${address.substring(
     address.length - char
   )}`;
 }
@@ -34,8 +34,10 @@ export async function toastLoad<T>(
   return ret;
 }
 
-export async function getContractData(client: GetPublicClientReturnType, address: Address) {
-
+export async function getContractData(
+  client: GetPublicClientReturnType,
+  address: Address
+) {
   client
     .queryWasmSmart({
       contract: address,

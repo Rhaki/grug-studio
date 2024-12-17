@@ -1,4 +1,5 @@
 import type { Address, Coins, ContractInfo } from "@left-curve/react/types";
+import TextWithDesc from "../../TextWithDesc";
 
 export interface ProposalsTabProps {
   address: Address;
@@ -9,26 +10,10 @@ export interface ProposalsTabProps {
 export default function ContractsContextTab(props: ProposalsTabProps) {
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex flex-col">
-        <p>Address</p>
-        <p>{props.address}</p>
-      </div>
-
-      <div className="flex flex-col">
-        <p>Label</p>
-        <p>{props.contractInfo.label}</p>
-      </div>
-
-      <div className="flex flex-col">
-        <p>Admin</p>
-        <p>{props.contractInfo.admin}</p>
-      </div>
-
-      <div className="flex flex-col">
-        <p>Code Hash</p>
-        <p>{props.contractInfo.codeHash}</p>
-      </div>
-
+      <TextWithDesc name="Address" value={props.address} />
+      <TextWithDesc name="Label" value={props.contractInfo.label} />
+      <TextWithDesc name="Admin" value={props.contractInfo.admin} />
+      <TextWithDesc name="Code Hash" value={props.contractInfo.codeHash} />
       <div className="flex flex-col">
         <p>Balances</p>
         {Object.entries(props.balances || {}).map(([key, value]) => (

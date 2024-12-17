@@ -3,7 +3,7 @@ import TabHeaders from "./tabHeaders";
 
 export default function TabRender() {
   return (
-    <div className="flex-1 mt-2">
+    <div className="flex flex-col flex-1 gap-3 mt-3">
       <TabHeaders />
       <SelectedTab />
     </div>
