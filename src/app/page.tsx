@@ -15,7 +15,7 @@ export default function Home() {
 
       <div className="flex flex-1 gap-3">
         <LeftMenu />
-        <div className="flex flex-col flex-1 mt-3 mr-3">
+        <div className="flex flex-col flex-1 mt-3 mr-3 mb-3">
           <SearchBar />
           <TabRender />
         </div>

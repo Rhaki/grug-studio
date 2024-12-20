@@ -3,6 +3,7 @@ import type {
   ChainInfoResponse,
   Coins,
   ContractInfo,
+  Json,
 } from "@left-curve/react/types";
 import {
   createContext,
@@ -14,6 +15,7 @@ import {
 
 export type TabKey =
   | { kind: "contract"; address: Address }
+  | { kind: "query"; id: string }
   | { kind: "contracts" }
   | { kind: "chainInfo" };
 
@@ -21,6 +23,9 @@ export function convertTabKey(key: TabKey): string {
   switch (key.kind) {
     case "contract":
       return `contract:${key.address}`;
+
+    case "query":
+      return `query:${key.id}`;
 
     case "contracts":
       return "contracts";
@@ -37,6 +42,9 @@ export function deriveTabKey(key: string): TabKey {
     case "contract":
       return { kind: "contract", address: value as Address };
 
+    case "query":
+      return { kind: "query", id: value };
+
     case "contracts":
       return { kind: "contracts" };
 
@@ -52,8 +60,10 @@ export type TabValue =
       kind: "contract";
       address: Address;
       contractInfo: ContractInfo;
+      queries: string[];
       balances?: Coins;
     }
+  | { kind: "query"; contract: Address; query: string }
   | { kind: "contracts"; contracts: Record<Address, ContractInfo> }
   | { kind: "chainInfo"; chainInfo: ChainInfoResponse };
 
@@ -64,8 +74,13 @@ export type TabEntities =
         kind: "contract";
         address: Address;
         contractInfo: ContractInfo;
+        queries: string[];
         balances?: Coins;
       };
+    }
+  | {
+      key: { kind: "query"; id: string };
+      value: { kind: "query"; contract: Address; query: string };
     }
   | {
       key: { kind: "contracts" };
@@ -82,6 +97,7 @@ type ContextState = {
   setSelectTab: (key: TabKey) => void;
   selectedTab: () => [TabKey, TabValue] | null;
   removeTab(key: TabKey | string): void;
+  swapTabs: (key1: string, key2: string) => void;
 };
 
 interface TabProviderProps {
@@ -102,6 +118,7 @@ export function TabProvider({ children }: TabProviderProps) {
 
       if (Object.hasOwn(tabs, key)) {
         console.log("tab already exists");
+        setTab({ ...tabs, [key]: value });
       } else {
         console.log("tab added");
         setTab({ ...tabs, [key]: value });
@@ -160,6 +177,17 @@ export function TabProvider({ children }: TabProviderProps) {
     [tabs, selectedTab]
   );
 
+  const swapTabs = useCallback(
+    (key1: string, key2: string) => {
+      const newTabs = { ...tabs };
+      const temp = newTabs[key1];
+      newTabs[key1] = newTabs[key2];
+      newTabs[key2] = temp;
+      setTab(newTabs);
+    },
+    [tabs]
+  );
+
   return (
     <TabContext.Provider
       value={{
@@ -167,6 +195,7 @@ export function TabProvider({ children }: TabProviderProps) {
         setSelectTab: trySetSelectTab,
         selectedTab: getSelectedTab,
         removeTab,
+        swapTabs,
         tabs,
       }}
     >

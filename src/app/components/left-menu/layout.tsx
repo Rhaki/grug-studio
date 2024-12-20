@@ -46,9 +46,9 @@ export default function LeftMenu() {
       <LeftMenuItem tooltip="Chain Info" onClick={chainInfo}>
         <IconInfo />
       </LeftMenuItem>
-      <LeftMenuItem tooltip="Chain config" onClick={chainInfo}>
+      {/* <LeftMenuItem tooltip="Chain config" onClick={appConfig}>
         <IconInfo />
-      </LeftMenuItem>
+      </LeftMenuItem> */}
     </div>
   );
 }

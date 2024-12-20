@@ -12,6 +12,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type React from "react";
 import { TabProvider } from "./contexts/tabProvider";
 import { ErrorProvider } from "./contexts/errorProvider";
+import { SearchContractProvider } from "./contexts/searchContractProvider";
 
 export const config = createConfig({
   ssr: true,
@@ -45,7 +46,9 @@ export function Providers({ children }: ProvidersProps) {
   return (
     <GrunnectProvider config={config}>
       <QueryClientProvider client={new QueryClient()}>
-        <TabProvider>{children}</TabProvider>
+        <TabProvider>
+          <SearchContractProvider>{children}</SearchContractProvider>
+        </TabProvider>
       </QueryClientProvider>
     </GrunnectProvider>
   );
